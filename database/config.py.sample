@@ -1,0 +1,3 @@
+
+global_dbcoon = 'mysql+pymysql://root:test!@xdxd.love:3306/test?charset=utf8'
+# global_dbcoon = 'mysql+mysqldb://root:root@xdxd.love:3306/test?charset=utf8'
