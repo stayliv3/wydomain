@@ -21,6 +21,12 @@ from utils.ilinks import Ilinks
 from utils.chaxunla import Chaxunla
 from utils.googlect import TransparencyReport
 
+
+# add by xd
+from database.database import *
+from datetime import datetime
+
+
 logging.basicConfig(
     level=logging.INFO, # filename='/tmp/wyproxy.log',
     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -134,6 +140,24 @@ def run(args):
     subdomains = list(set(subdomains))
     _result_file = os.path.join(script_path, outfile)
     save_result(_result_file, subdomains)
+
+    # save subdomains to databases add by xd
+    for xd_subdomain in subdomains:
+        newsubdomain = Subdomains(
+            subdomain=xd_subdomain,
+            ownedby=args.domain,
+            findby='wydomain2',
+            inserted=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        )
+        try:
+            session = DBSession()
+            session.add(newsubdomain)
+            session.commit()
+            session.close()
+        except:
+            print('insert database error')
+
+
     logging.info("{0} {1} subdomains save to {2}".format(
         domain, len(subdomains), _result_file))
 
